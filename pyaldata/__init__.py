@@ -26,7 +26,10 @@ from .interval import (
     slice_between_points,
     slice_in_trial,
 )
-from .io import mat2dataframe
+from .io import (
+    mat2dataframe,
+    load_pyaldata,
+)
 from .movement_onset_and_peak import (
     add_movement_onset,
     add_peak_speed,
