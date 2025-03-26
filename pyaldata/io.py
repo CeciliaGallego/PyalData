@@ -5,7 +5,7 @@ from pathlib import Path
 from . import data_cleaning
 
 __all__ = ["mat2dataframe"
-           "multiplemat2dataframe"]
+           "load_pyaldata"]
 
 
 def mat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None) -> pd.DataFrame:
@@ -62,7 +62,7 @@ def mat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None) -> pd.
 
     return df
 
-def multiplemat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None) -> pd.DataFrame:
+def load_pyaldata(path: str, shift_idx_fields: bool = False, td_name: str = None) -> pd.DataFrame:
     """
     Load multiple pyal_data .mat files and turn it into a single pandas DataFrame
 
@@ -72,7 +72,7 @@ def multiplemat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None
         path to the session directory, where the .mat files are saved
     td_name : str, optional
         name of the variable under which the data was saved
-    shift_idx_fields : bool
+    shift_idx_fields : bool, optional
         whether to shift the idx fields
         set to True if the data was exported from matlab
         using its 1-based indexig
