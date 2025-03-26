@@ -1,9 +1,11 @@
 import pandas as pd
 import scipy.io
+from pathlib import Path
 
 from . import data_cleaning
 
-__all__ = ["mat2dataframe"]
+__all__ = ["mat2dataframe"
+           "load_pyaldata"]
 
 
 def mat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None) -> pd.DataFrame:
@@ -59,3 +61,33 @@ def mat2dataframe(path: str, shift_idx_fields: bool, td_name: str = None) -> pd.
         df = data_cleaning.backshift_idx_fields(df)
 
     return df
+
+def load_pyaldata(path: str, shift_idx_fields: bool = False, td_name: str = None) -> pd.DataFrame:
+    """
+    Load multiple pyal_data .mat files and turn it into a single pandas DataFrame
+
+    Parameters
+    ----------
+    path : str
+        path to the session directory, where the .mat files are saved
+    td_name : str, optional
+        name of the variable under which the data was saved
+    shift_idx_fields : bool, optional
+        whether to shift the idx fields
+        set to True if the data was exported from matlab
+        using its 1-based indexig
+
+    Returns
+    -------
+    df : pd.DataFrame
+        pandas dataframe replicating the trial_data format
+        each row is a trial
+    """
+    
+    pyal_files = list(Path(path).glob("*.mat"))
+
+    df = []
+    for file in pyal_files:
+        df_single = mat2dataframe(file, shift_idx_fields, td_name)
+        df.append(df_single)
+    df = pd.concat(df, ignore_index=True)
